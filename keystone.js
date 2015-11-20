@@ -13,7 +13,7 @@ var handlebars = require('express-handlebars');
 keystone.init({
 
 	'name': 'keystone-template',
-	'brand': 'keystone-template',
+	'brand': 'daily-scrum-api',
 	
 	'sass': 'public',
 	'static': 'public',
@@ -97,10 +97,12 @@ keystone.set('email tests', require('./routes/emails'));
 // Configure the navigation bar in Keystone's Admin UI
 
 keystone.set('nav', {
-	'posts': ['posts', 'post-categories'],
-	'galleries': 'galleries',
-	'enquiries': 'enquiries',
-	'users': 'users'
+	// 'posts': ['posts', 'post-categories'],
+	// 'galleries': 'galleries',
+	// 'enquiries': 'enquiries',
+	'users': 'users',
+  'projects': 'projects',
+  'tasks': 'tasks'
 });
 
 // Start Keystone to connect to your database and initialise the web server

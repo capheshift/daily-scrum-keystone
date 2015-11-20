@@ -48,14 +48,20 @@ Project.add({
 		default: 0
 	},
 
-	isDone: {
-		type: Boolean, label: 'Completed', index: true
-	},
-
 	createdDate: {
 		type: Date,
 		default: Date.now
 	}
+}, 'Settings', {
+	isCompleted: {
+		type: Boolean, label: 'Is project completed', index: true
+	}
 });
+
+Project.schema.statics = {
+	getPopulateFields: function() {
+		return '_scrumMaster members';
+	}
+};
 
 Project.register();

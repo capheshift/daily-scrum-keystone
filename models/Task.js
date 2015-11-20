@@ -45,7 +45,13 @@ Task.add({
 	createdDate: {
 		type: Date,
 		default: Date.now
-	},
+	}
 });
+
+Task.schema.statics = {
+	getPopulateFields: function() {
+		return '_project _user';
+	}
+};
 
 Task.register();
