@@ -1,6 +1,11 @@
 // @capheshift 2015
 // Author: tw
 
+var _ = require('lodash');
 var keystone = require('keystone');
-var restcore = require('');
-var taskApi = restcore(keystone.list('Task').model);
+var restful = require('../../cores/restful');
+var TaskModel = keystone.list('Task').model;
+
+exports = module.exports = _.assign(restful(TaskModel), {
+
+});

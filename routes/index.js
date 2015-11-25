@@ -22,35 +22,31 @@ var keystone = require('keystone');
 var middleware = require('./middleware');
 var importRoutes = keystone.importer(__dirname);
 
-var restful = require('../cores/restful');
-var userApi = restful(keystone.list('User').model);
-var projectApi = restful(keystone.list('Project').model);
-var taskApi = restful(keystone.list('Task').model);
-
 // Common Middleware
 keystone.pre('routes', middleware.initLocals);
 keystone.pre('render', middleware.flashMessages);
 
 // Import Route Controllers
 var routes = {
-	views: importRoutes('./views')
+	views: importRoutes('./views'),
+	services: importRoutes('/services')
 };
 
 // Setup Route Bindings
 exports = module.exports = function(app) {
-	
 	// Views
 	app.get('/', routes.views.index);
-	app.get('/blog/:category?', routes.views.blog);
-	app.get('/blog/post/:post', routes.views.post);
-	app.all('/contact', routes.views.contact);
-	app.get('/gallery', routes.views.gallery);
+	// app.get('/blog/:category?', routes.views.blog);
+	// app.get('/blog/post/:post', routes.views.post);
+	// app.all('/contact', routes.views.contact);
+	// app.get('/gallery', routes.views.gallery);
 
-	app.get('/api/project/all', projectApi._all);
-	app.get('/api/user/all', userApi._all);
-	app.get('/api/task/all', taskApi._all);
+	// apis
+	app.get('/api/user/gettoken', routes.services.users.signin);
+	app.get('/api/project/all', middleware.requireToken, routes.services.projects._all);
+	app.get('/api/task/all', middleware.requireToken, routes.services.tasks._all);
+	app.get('/api/user/all', middleware.requireToken, routes.services.users._all);
 	
 	// NOTE: To protect a route so that only admins can see it, use the requireUser middleware:
 	// app.get('/protected', middleware.requireUser, routes.views.protected);
-	
 };

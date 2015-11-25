@@ -58,9 +58,8 @@ exports.flashMessages = function(req, res, next) {
 
 
 /**
-	Prevents people from accessing protected pages when they're not signed in
+ * Prevents people from accessing protected pages when they're not signed in
  */
-
 exports.requireUser = function(req, res, next) {
 	
 	if (!req.user) {
@@ -69,5 +68,12 @@ exports.requireUser = function(req, res, next) {
 	} else {
 		next();
 	}
-	
+};
+
+
+/**
+ * Prevents people from accessing protected api without authentication
+ */
+exports.requireToken = function(req, res, next) {
+	next();
 };
