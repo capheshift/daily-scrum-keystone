@@ -20,6 +20,7 @@
 
 var keystone = require('keystone');
 var middleware = require('./middleware');
+var expressJwt = require('express-jwt');
 var importRoutes = keystone.importer(__dirname);
 
 // Common Middleware
@@ -34,6 +35,17 @@ var routes = {
 
 // Setup Route Bindings
 exports = module.exports = function(app) {
+	// authorization not incase of debuging
+	if (!process.env.DEBUG) {
+		app.use('/*', expressJwt({
+			secret: process.env.SECRET
+		}).unless({
+			path: [
+				'/api/user/gettoken'
+			]
+		}));
+	}
+
 	// Views
 	app.get('/', routes.views.index);
 	// app.get('/blog/:category?', routes.views.blog);
@@ -41,12 +53,33 @@ exports = module.exports = function(app) {
 	// app.all('/contact', routes.views.contact);
 	// app.get('/gallery', routes.views.gallery);
 
-	// apis
-	app.get('/api/user/gettoken', routes.services.users.signin);
-	app.get('/api/project/all', middleware.requireToken, routes.services.projects._all);
-	app.get('/api/task/all', middleware.requireToken, routes.services.tasks._all);
-	app.get('/api/user/all', middleware.requireToken, routes.services.users._all);
+	// USER MODEL: function for set of collection
+	app.get('/api/user/gettoken', routes.services.users.testSignin); //will remove
+	app.post('/api/user/gettoken', routes.services.users.signin);
+	app.get('/api/user/all', routes.services.users._all);
+	app.get('/api/user/find', routes.services.users._find);
+	app.get('/api/user/:_id/detail', routes.services.users._get);
+	app.put('/api/user/:_id', routes.services.users._put);
 	
+	// TASK MODEL: function for set of collection
+	app.get('/api/task/all', routes.services.tasks._all);
+	app.get('/api/task/find', routes.services.tasks._find);
+	app.get('/api/task/:_id/detail', routes.services.tasks._get);
+	// functions for special collection
+	app.post('/api/task/', routes.services.tasks._post);
+	app.put('/api/task/:_id', routes.services.tasks._put);
+	app.delete('/api/task/:_id', routes.services.tasks._delete);
+
+	// TASK MODEL: function for set of collection
+	app.get('/api/project/all', routes.services.projects._all);
+	app.get('/api/project/find', routes.services.projects._find);
+
+	// PROJECT MODEL: functions for special collection
+	app.get('/api/project/:_id/detail', routes.services.projects._get);
+	app.post('/api/project/', routes.services.projects._post);
+	app.put('/api/project/:_id', routes.services.projects._put);
+	app.delete('/api/project/:_id', routes.services.projects._delete);
+
 	// NOTE: To protect a route so that only admins can see it, use the requireUser middleware:
 	// app.get('/protected', middleware.requireUser, routes.views.protected);
 };
