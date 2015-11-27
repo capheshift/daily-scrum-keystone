@@ -46,6 +46,22 @@ exports = module.exports = function(app) {
 		}));
 	}
 
+	// CORS
+	app.use(function(req, res, next) {
+		res.setHeader('Access-Control-Allow-Origin', '*');
+		res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE, CONNECT');
+		res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Authorization');
+		res.setHeader('Access-Control-Allow-Credentials', true);
+		res.setHeader('Access-Control-Max-Age', '86400'); // 24 hours
+
+		// Intercept OPTIONS method
+		if (req.method === 'OPTIONS') {
+			res.sendStatus(200);
+		} else {
+			next();
+		}
+	});
+
 	// Views
 	app.get('/', routes.views.index);
 	// app.get('/blog/:category?', routes.views.blog);
@@ -55,7 +71,7 @@ exports = module.exports = function(app) {
 
 	// USER MODEL: function for set of collection
 	app.get('/api/user/gettoken', routes.services.users.testSignin); //will remove
-	app.post('/api/user/gettoken', routes.services.users.signin);
+	app.post('/api/user/login', routes.services.users.signin);
 	app.get('/api/user/all', routes.services.users._all);
 	app.get('/api/user/find', routes.services.users._find);
 	app.get('/api/user/:_id/detail', routes.services.users._get);

@@ -43,7 +43,7 @@ exports = module.exports = _.assign(restful(UserModel), {
 
 	signin: function(req, res) {
 		var User = keystone.list(keystone.get('user model'));
-		var email = req.body.email;
+		var email = req.body.username;
 		var password = req.body.password;
 		var emailRegExp = new RegExp('^' + kutils.escapeRegExp(email) + '$', 'i');
 
