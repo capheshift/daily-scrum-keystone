@@ -12,7 +12,7 @@ var handlebars = require('express-handlebars');
 
 keystone.init({
 
-	'name': 'keystone-template',
+	'name': 'daily-scrum-api',
 	'brand': 'daily-scrum-api',
 	
 	'sass': 'public',
