@@ -57,8 +57,10 @@ exports = module.exports = _.assign(restful(UserModel), {
 					}
 					if (isMatch) {
 						var token = jwt.sign(user, process.env.SECRET);
-						user.token = token;
-						res.jsonp(utils.response(true, user));
+						res.jsonp(utils.response(true, {
+							user: user,
+							token: token
+						}));
 					} else {
 						return res.json(utils.response(false, { error: 'invalid details' }));
 					}
