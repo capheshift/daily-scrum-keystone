@@ -57,7 +57,10 @@ exports = module.exports = function(app) {
 			secret: process.env.SECRET
 		}).unless({
 			path: [
-				'/api/user/gettoken'
+				'/',
+				'/api/user/gettoken',
+				'/api/user/login',
+				'/api/user/register'
 			]
 		}));
 	}
