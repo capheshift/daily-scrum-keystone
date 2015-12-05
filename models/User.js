@@ -12,6 +12,7 @@ var User = new keystone.List('User');
 User.add({
 	name: { type: Types.Name, required: true, index: true },
 	fullName: { type: String, default: 'Scrum Member' },
+	titleJob: { type: String, default: 'Agile Developer' },
 	email: { type: Types.Email, initial: true, required: true, index: true },
 	password: { type: Types.Password, initial: true, required: true }
 }, 'Permissions', {
@@ -24,6 +25,12 @@ User.schema.virtual('canAccessKeystone').get(function() {
 	return this.isAdmin;
 });
 
+
+//Pre-save hook
+User.schema.pre('save', function(next) {
+	this.fullName = this.name.first + ' ' + this.name.last;
+	next();
+});
 
 /**
  * Relationships
