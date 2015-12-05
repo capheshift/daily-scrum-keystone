@@ -35,17 +35,6 @@ var routes = {
 
 // Setup Route Bindings
 exports = module.exports = function(app) {
-	// authorization not incase of debuging
-	if (!process.env.DEBUG) {
-		app.use('/*', expressJwt({
-			secret: process.env.SECRET
-		}).unless({
-			path: [
-				'/api/user/gettoken'
-			]
-		}));
-	}
-
 	// CORS
 	app.use(function(req, res, next) {
 		res.setHeader('Access-Control-Allow-Origin', '*');
@@ -61,6 +50,17 @@ exports = module.exports = function(app) {
 			next();
 		}
 	});
+
+	// authorization not incase of debuging
+	if (!process.env.DEBUG) {
+		app.use('/*', expressJwt({
+			secret: process.env.SECRET
+		}).unless({
+			path: [
+				'/api/user/gettoken'
+			]
+		}));
+	}
 
 	// Views
 	app.get('/', routes.views.index);

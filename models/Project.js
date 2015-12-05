@@ -64,4 +64,5 @@ Project.schema.statics = {
 	}
 };
 
+Project.defaultColumns = 'name, description|40%, state, isCompleted';
 Project.register();

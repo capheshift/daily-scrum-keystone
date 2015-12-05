@@ -2,6 +2,7 @@
 // Author: tw
 
 var _ = require('lodash');
+var debug = require('debug')('user-api');
 var keystone = require('keystone');
 var kutils = require('keystone-utils');
 var restful = require('../../cores/restful');
@@ -46,6 +47,7 @@ exports = module.exports = _.assign(restful(UserModel), {
 		var email = req.body.username;
 		var password = req.body.password;
 		var emailRegExp = new RegExp('^' + kutils.escapeRegExp(email) + '$', 'i');
+		debug('user-api', email, password);
 
 		User.model.findOne({ email: emailRegExp }).exec(function (err, user) {
 			if (user) {

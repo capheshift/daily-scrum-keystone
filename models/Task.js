@@ -35,7 +35,9 @@ Task.add({
 	},
 
 	content: {
-		type: String
+		type: String,
+		require: true,
+		trim: true
 	},
 
 	estimation: {
@@ -54,4 +56,8 @@ Task.schema.statics = {
 	}
 };
 
+/**
+ * Task
+ */
+Task.defaultColumns = 'content|40%, date, estimation, isCompleted';
 Task.register();
